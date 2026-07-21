@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const store = require('./data/store');
+const { validateCustomer } = require('./models/validation');
+const { createCustomer, createDefaultOnboardingSteps, calculateProgress } = require('./models');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -54,6 +56,54 @@ app.get('/api/onboarding', (req, res) => {
   });
 
   res.json(dashboard);
+});
+
+// Create a new customer
+app.post('/api/customers', (req, res) => {
+  const { valid, errors } = validateCustomer(req.body);
+  if (!valid) {
+    return res.status(400).json({ errors });
+  }
+
+  const customer = store.addCustomer(createCustomer(req.body));
+
+  const steps = createDefaultOnboardingSteps();
+  steps[0].status = 'completed';
+  const onboardingState = store.addOnboardingState({
+    customerId: customer.id,
+    steps,
+    progressPercent: calculateProgress(steps)
+  });
+
+  res.status(201).json({ customer, onboardingState });
+});
+
+// Update an existing customer
+app.put('/api/customers/:id', (req, res) => {
+  const existing = store.getCustomerById(req.params.id);
+  if (!existing) {
+    return res.status(404).json({ error: 'Customer not found' });
+  }
+
+  const { valid, errors } = validateCustomer(req.body);
+  if (!valid) {
+    return res.status(400).json({ errors });
+  }
+
+  const customer = store.updateCustomer(req.params.id, req.body);
+
+  let onboardingState = store.getOnboardingState(req.params.id);
+  if (onboardingState) {
+    const steps = onboardingState.steps.map((step) =>
+      step.id === 'step_1' ? { ...step, status: 'completed' } : step
+    );
+    onboardingState = store.updateOnboardingState(req.params.id, {
+      steps,
+      progressPercent: calculateProgress(steps)
+    });
+  }
+
+  res.json({ customer, onboardingState });
 });
 
 // Get tenant by customer ID

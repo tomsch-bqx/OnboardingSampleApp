@@ -32,10 +32,43 @@ test.describe('Onboarding Dashboard', () => {
   test('should switch between tabs', async ({ page }) => {
     await page.goto('/');
 
-    // Click on Customer Info tab
+    // Click on Data Mapping tab (still a placeholder)
+    await page.getByRole('button', { name: 'Data Mapping' }).click();
+
+    await expect(page.locator('.placeholder h2')).toContainText('Data Mapping');
+  });
+});
+
+test.describe('Customer Info', () => {
+  test('should show the form pre-filled with the existing customer', async ({ page }) => {
+    await page.goto('/');
     await page.getByRole('button', { name: 'Customer Info' }).click();
 
-    // Verify placeholder content is shown
-    await expect(page.locator('.placeholder h2')).toContainText('Customer Info');
+    await expect(page.getByLabel('Name')).toHaveValue('Acme Corporation');
+  });
+
+  test('should show a validation error for an empty name', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Customer Info' }).click();
+
+    await page.getByLabel('Name').fill('');
+    await page.getByRole('button', { name: 'Save' }).click();
+
+    await expect(page.locator('.form-error')).toContainText('Name is required');
+  });
+
+  test('should save and mark the Customer Info step completed', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Customer Info' }).click();
+
+    await expect(page.getByLabel('Name')).toHaveValue('Acme Corporation');
+    await page.getByRole('button', { name: 'Save' }).click();
+
+    await expect(page.locator('.form-success')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Dashboard' }).click();
+    await expect(page.locator('.checklist li').first().locator('.step-status')).toHaveClass(
+      /completed/
+    );
   });
 });

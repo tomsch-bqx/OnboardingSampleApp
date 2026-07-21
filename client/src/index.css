@@ -169,3 +169,52 @@ header p {
   color: #6b7280;
   font-size: 0.9rem;
 }
+
+.form-field {
+  margin-bottom: 16px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #9ca3af;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-input.error {
+  border-color: #f59e0b;
+}
+
+.form-error {
+  color: #f59e0b;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.form-success {
+  color: #10b981;
+  margin-top: 12px;
+}
+
+.form-submit {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
