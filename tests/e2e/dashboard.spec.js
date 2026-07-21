@@ -34,7 +34,7 @@ test.describe('Onboarding Dashboard', () => {
 
     // Click on Customer Info tab
     await page.getByRole('button', { name: 'Customer Info' }).click();
-    
+
     // Verify placeholder content is shown
     await expect(page.locator('.placeholder h2')).toContainText('Customer Info');
   });

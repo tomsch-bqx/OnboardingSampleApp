@@ -54,7 +54,7 @@ function getCustomers() {
 }
 
 function getCustomerById(id) {
-  return store.customers.find(c => c.id === id);
+  return store.customers.find((c) => c.id === id);
 }
 
 function addCustomer(customer) {
@@ -67,7 +67,7 @@ function getTenants() {
 }
 
 function getTenantByCustomerId(customerId) {
-  return store.tenants.find(t => t.customerId === customerId);
+  return store.tenants.find((t) => t.customerId === customerId);
 }
 
 function addTenant(tenant) {
@@ -76,7 +76,7 @@ function addTenant(tenant) {
 }
 
 function getOnboardingState(customerId) {
-  return store.onboardingStates.find(s => s.customerId === customerId);
+  return store.onboardingStates.find((s) => s.customerId === customerId);
 }
 
 function getAllOnboardingStates() {
@@ -89,7 +89,7 @@ function addOnboardingState(state) {
 }
 
 function updateOnboardingState(customerId, updates) {
-  const index = store.onboardingStates.findIndex(s => s.customerId === customerId);
+  const index = store.onboardingStates.findIndex((s) => s.customerId === customerId);
   if (index !== -1) {
     store.onboardingStates[index] = { ...store.onboardingStates[index], ...updates };
     return store.onboardingStates[index];

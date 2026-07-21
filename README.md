@@ -32,13 +32,13 @@ Then open **http://localhost:5173** in your browser.
 
 ### Other Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm start` | Run full app (server + client) |
-| `npm run server` | Run backend only (port 3001) |
-| `npm run client` | Run frontend only (port 5173) |
-| `npm run test:unit` | Run unit tests |
-| `npm run test:e2e` | Run Playwright e2e tests |
+| Command             | Description                    |
+| ------------------- | ------------------------------ |
+| `npm start`         | Run full app (server + client) |
+| `npm run server`    | Run backend only (port 3001)   |
+| `npm run client`    | Run frontend only (port 5173)  |
+| `npm run test:unit` | Run unit tests                 |
+| `npm run test:e2e`  | Run Playwright e2e tests       |
 
 ### VSCode/Cursor/Windsurf
 
@@ -52,11 +52,12 @@ Press **F5** to launch the app with debugging enabled. See `.vscode/launch.json`
 
 - This is **NOT** a coding competition
 - You (probably) will **NOT finish the app** — that's intentional
-- Success = *earliest usable value*, not completeness
+- Success = _earliest usable value_, not completeness
 - Huge Success = earliest usable value + fastest expansion in completeness
 - **AI writes ALL code** — you decide what matters
 
 **Elephant Carpaccio principles:**
+
 - Thin slices
 - Working software over completeness
 - Tool MUST work at every iteration
@@ -65,6 +66,7 @@ Press **F5** to launch the app with debugging enabled. See `.vscode/launch.json`
 ### Build Time (5 × 8-minute sprints)
 
 **Rules:**
+
 - Start from this base repo (fork for tools like Devin)
 - Use any mix of AI & traditional tools
 - Follow any methodology: TDD, manual testing, let users test in prod
@@ -76,10 +78,11 @@ Press **F5** to launch the app with debugging enabled. See `.vscode/launch.json`
 Demo **whatever you reached**, no matter how small.
 
 **Reflection questions:**
-- What was your *first* valuable slice?
+
+- What was your _first_ valuable slice?
 - Where did AI accelerate you most?
-- Where did it *not* help?
-- What did you *not* build that you normally would?
+- Where did it _not_ help?
+- What did you _not_ build that you normally would?
 - How did your workflow differ from your company's accepted norms?
 - How comfortable are you that the company keeps using this tool so it can pay you?
 - What would your next slice be with 10 more minutes?
@@ -89,10 +92,12 @@ Demo **whatever you reached**, no matter how small.
 ## What's in This Repo
 
 ### Running Skeleton App
+
 - ✅ App boots with single command
 - ✅ Single page loads with "Onboarding Dashboard" heading
 
 ### Navigation Scaffold
+
 - ✅ Dashboard (shows onboarding queue)
 - ✅ Customer Info (placeholder)
 - ✅ Data Mapping (placeholder)
@@ -116,14 +121,17 @@ OnboardingStep {
 ```
 
 ### Seed Data
+
 - 1 example customer: **Acme Corporation**
 - 1 example onboarding state at 0% progress
 
 ### Progress Indicator
+
 - ✅ Static checklist showing all steps as pending
 - ✅ Progress bar at 0%
 
 ### Test Structure
+
 - ✅ Unit tests: `npm run test:unit`
 - ✅ E2E tests: `npm run test:e2e`
 
@@ -156,14 +164,14 @@ Intentionally boring and fast:
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | Health check |
-| GET | `/api/customers` | List all customers |
-| GET | `/api/customers/:id` | Get customer by ID |
-| GET | `/api/customers/:id/onboarding` | Get onboarding state |
-| GET | `/api/onboarding` | Dashboard view (all states + customer info) |
-| GET | `/api/tenants/:customerId` | Get tenant by customer ID |
+| Method | Endpoint                        | Description                                 |
+| ------ | ------------------------------- | ------------------------------------------- |
+| GET    | `/api/health`                   | Health check                                |
+| GET    | `/api/customers`                | List all customers                          |
+| GET    | `/api/customers/:id`            | Get customer by ID                          |
+| GET    | `/api/customers/:id/onboarding` | Get onboarding state                        |
+| GET    | `/api/onboarding`               | Dashboard view (all states + customer info) |
+| GET    | `/api/tenants/:customerId`      | Get tenant by customer ID                   |
 
 ---
 
@@ -181,13 +189,14 @@ See [sample-data/README.md](sample-data/README.md) for detailed documentation of
 
 ### Sample Data Overview
 
-| Customer | Schema Style | Date Format |
-|----------|--------------|-------------|
-| ABC Accounting | Title Case columns | MM/DD/YYYY |
-| XYZ Financial Services | camelCase columns | YYYY-MM-DD |
-| Premier Bookkeeping | snake_case columns | DD-MM-YYYY |
+| Customer               | Schema Style       | Date Format |
+| ---------------------- | ------------------ | ----------- |
+| ABC Accounting         | Title Case columns | MM/DD/YYYY  |
+| XYZ Financial Services | camelCase columns  | YYYY-MM-DD  |
+| Premier Bookkeeping    | snake_case columns | DD-MM-YYYY  |
 
 Each customer folder contains:
+
 - Clients (10-12 records)
 - Contacts (15-20 records)
 - Chart of Accounts (35-40 entries)

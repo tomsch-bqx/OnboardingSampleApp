@@ -22,12 +22,12 @@ function App() {
         if (!Array.isArray(data)) throw new Error('Invalid response format');
         return data;
       })
-      .then(data => {
+      .then((data) => {
         setOnboardingData(data);
         setError(null);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Failed to fetch onboarding data:', err);
         setError(err.message);
         setOnboardingData([]);
@@ -43,7 +43,7 @@ function App() {
       </header>
 
       <nav className="tabs">
-        {TABS.map(tab => (
+        {TABS.map((tab) => (
           <button
             key={tab.id}
             className={`tab ${activeTab === tab.id ? 'active' : ''}`}
@@ -59,13 +59,22 @@ function App() {
           <DashboardTab data={onboardingData} loading={loading} error={error} />
         )}
         {activeTab === 'customer-info' && (
-          <PlaceholderTab title="Customer Info" description="Collect and validate customer information" />
+          <PlaceholderTab
+            title="Customer Info"
+            description="Collect and validate customer information"
+          />
         )}
         {activeTab === 'data-mapping' && (
-          <PlaceholderTab title="Data Mapping" description="Map customer data to platform configuration" />
+          <PlaceholderTab
+            title="Data Mapping"
+            description="Map customer data to platform configuration"
+          />
         )}
         {activeTab === 'tenant-setup' && (
-          <PlaceholderTab title="Tenant Setup" description="Provision and configure customer tenant" />
+          <PlaceholderTab
+            title="Tenant Setup"
+            description="Provision and configure customer tenant"
+          />
         )}
         {activeTab === 'import' && (
           <PlaceholderTab title="Import" description="Import customer data into the platform" />
@@ -77,7 +86,11 @@ function App() {
 
 function DashboardTab({ data, loading, error }) {
   if (loading) {
-    return <div className="placeholder"><p>Loading...</p></div>;
+    return (
+      <div className="placeholder">
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   if (error) {
@@ -90,7 +103,11 @@ function DashboardTab({ data, loading, error }) {
   }
 
   if (data.length === 0) {
-    return <div className="placeholder"><p>No customers in the onboarding queue</p></div>;
+    return (
+      <div className="placeholder">
+        <p>No customers in the onboarding queue</p>
+      </div>
+    );
   }
 
   return (
@@ -100,7 +117,7 @@ function DashboardTab({ data, loading, error }) {
         {data.length} customer(s) awaiting onboarding
       </p>
 
-      {data.map(item => (
+      {data.map((item) => (
         <div key={item.customerId} className="customer-card">
           <h3>{item.customerName}</h3>
           <div className="customer-meta">
@@ -121,10 +138,7 @@ function DashboardTab({ data, loading, error }) {
 function ProgressBar({ percent }) {
   return (
     <div className="progress-bar-container">
-      <div 
-        className="progress-bar" 
-        style={{ width: `${Math.max(percent, 0)}%` }}
-      >
+      <div className="progress-bar" style={{ width: `${Math.max(percent, 0)}%` }}>
         {percent > 0 ? `${percent}%` : ''}
       </div>
     </div>
@@ -134,7 +148,7 @@ function ProgressBar({ percent }) {
 function Checklist({ steps }) {
   return (
     <ul className="checklist">
-      {steps.map(step => (
+      {steps.map((step) => (
         <li key={step.id}>
           <span className={`step-status ${step.status}`}>
             {step.status === 'completed' ? '✓' : step.order}
@@ -154,9 +168,7 @@ function PlaceholderTab({ title, description }) {
     <div className="placeholder">
       <h2>{title}</h2>
       <p>{description}</p>
-      <p style={{ marginTop: '20px', fontSize: '0.9rem' }}>
-        🚧 This section is ready to be built
-      </p>
+      <p style={{ marginTop: '20px', fontSize: '0.9rem' }}>🚧 This section is ready to be built</p>
     </div>
   );
 }

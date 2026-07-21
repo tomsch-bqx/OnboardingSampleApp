@@ -41,10 +41,10 @@ app.get('/api/customers/:id/onboarding', (req, res) => {
 app.get('/api/onboarding', (req, res) => {
   const states = store.getAllOnboardingStates();
   const customers = store.getCustomers();
-  
+
   // Join customer info with onboarding state
-  const dashboard = states.map(state => {
-    const customer = customers.find(c => c.id === state.customerId);
+  const dashboard = states.map((state) => {
+    const customer = customers.find((c) => c.id === state.customerId);
     return {
       ...state,
       customerName: customer?.name || 'Unknown',
@@ -52,7 +52,7 @@ app.get('/api/onboarding', (req, res) => {
       customerRegion: customer?.region || ''
     };
   });
-  
+
   res.json(dashboard);
 });
 

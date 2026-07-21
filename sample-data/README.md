@@ -4,11 +4,11 @@ This directory contains sample data from three fictional accounting customers, e
 
 ## Customer Overview
 
-| Customer | Folder | Industry Focus | Schema Style |
-|----------|--------|----------------|--------------|
-| ABC Accounting | CustomerA_ABCAccounting | General US businesses | Title Case columns, MM/DD/YYYY dates |
-| XYZ Financial Services | CustomerB_XYZFinancialServices | Mixed US businesses | camelCase columns, YYYY-MM-DD dates |
-| Premier Bookkeeping | CustomerC_PremierBookkeeping | UK businesses | snake_case columns, DD-MM-YYYY dates |
+| Customer               | Folder                         | Industry Focus        | Schema Style                         |
+| ---------------------- | ------------------------------ | --------------------- | ------------------------------------ |
+| ABC Accounting         | CustomerA_ABCAccounting        | General US businesses | Title Case columns, MM/DD/YYYY dates |
+| XYZ Financial Services | CustomerB_XYZFinancialServices | Mixed US businesses   | camelCase columns, YYYY-MM-DD dates  |
+| Premier Bookkeeping    | CustomerC_PremierBookkeeping   | UK businesses         | snake_case columns, DD-MM-YYYY dates |
 
 ## Data Files
 
@@ -23,41 +23,41 @@ Each customer folder contains four CSV files:
 
 ### Client Entity
 
-| Field Concept | Customer A | Customer B | Customer C |
-|---------------|------------|------------|------------|
-| ID | Client ID | clientCode | customer_id |
-| Name | Client Name | companyName | business_name |
-| Entity Type | Business Type | entityType | legal_structure |
-| Status | Status | clientStatus | account_status |
-| Start Date | Date Onboarded | startDate | registration_date |
-| Tax ID | Tax ID | federalTaxId | tax_reference |
-| Revenue | Annual Revenue | yearlyRevenue | gross_revenue |
-| Industry | Industry | sectorCode | industry_sector |
-| Terms | Payment Terms | billingTerms | credit_terms |
+| Field Concept | Customer A     | Customer B    | Customer C        |
+| ------------- | -------------- | ------------- | ----------------- |
+| ID            | Client ID      | clientCode    | customer_id       |
+| Name          | Client Name    | companyName   | business_name     |
+| Entity Type   | Business Type  | entityType    | legal_structure   |
+| Status        | Status         | clientStatus  | account_status    |
+| Start Date    | Date Onboarded | startDate     | registration_date |
+| Tax ID        | Tax ID         | federalTaxId  | tax_reference     |
+| Revenue       | Annual Revenue | yearlyRevenue | gross_revenue     |
+| Industry      | Industry       | sectorCode    | industry_sector   |
+| Terms         | Payment Terms  | billingTerms  | credit_terms      |
 
 ### Status Values (Picklist Example)
 
-| Meaning | Customer A | Customer B | Customer C |
-|---------|------------|------------|------------|
-| Active | Active | A | ACTIVE |
-| Inactive | Inactive | I | DORMANT |
-| Pending | Pending | P | SUSPENDED |
+| Meaning  | Customer A | Customer B | Customer C |
+| -------- | ---------- | ---------- | ---------- |
+| Active   | Active     | A          | ACTIVE     |
+| Inactive | Inactive   | I          | DORMANT    |
+| Pending  | Pending    | P          | SUSPENDED  |
 
 ### Entity Type Values (Picklist Example)
 
-| Meaning | Customer A | Customer B | Customer C |
-|---------|------------|------------|------------|
-| Corporation | Corporation | CORP | Limited Company |
-| S-Corporation | S-Corporation | SCORP | Limited Company |
-| LLC | LLC | LLC | LLP |
-| Partnership | Partnership | PART | Partnership |
-| Sole Proprietor | Sole Proprietorship | SOLE | Sole Trader |
-| Non-Profit | Non-Profit | NPROF | (not used) |
+| Meaning         | Customer A          | Customer B | Customer C      |
+| --------------- | ------------------- | ---------- | --------------- |
+| Corporation     | Corporation         | CORP       | Limited Company |
+| S-Corporation   | S-Corporation       | SCORP      | Limited Company |
+| LLC             | LLC                 | LLC        | LLP             |
+| Partnership     | Partnership         | PART       | Partnership     |
+| Sole Proprietor | Sole Proprietorship | SOLE       | Sole Trader     |
+| Non-Profit      | Non-Profit          | NPROF      | (not used)      |
 
 ### Date Formats
 
-| Customer | Format | Example |
-|----------|--------|---------|
+| Customer   | Format     | Example    |
+| ---------- | ---------- | ---------- |
 | Customer A | MM/DD/YYYY | 01/15/2024 |
 | Customer B | YYYY-MM-DD | 2024-01-15 |
 | Customer C | DD-MM-YYYY | 15-01-2024 |
@@ -65,39 +65,39 @@ Each customer folder contains four CSV files:
 ### Transaction Types (Picklist Example)
 
 | Meaning | Customer A | Customer B | Customer C |
-|---------|------------|------------|------------|
-| Debit | Debit | DR | D |
-| Credit | Credit | CR | C |
+| ------- | ---------- | ---------- | ---------- |
+| Debit   | Debit      | DR         | D          |
+| Credit  | Credit     | CR         | C          |
 
 ### Transaction Status Values
 
-| Meaning | Customer A | Customer B | Customer C |
-|---------|------------|------------|------------|
-| Completed | Cleared | POSTED | Reconciled |
-| Pending | Pending | PENDING | Unreconciled |
-| Cancelled | Voided | VOID | Cancelled |
+| Meaning   | Customer A | Customer B | Customer C   |
+| --------- | ---------- | ---------- | ------------ |
+| Completed | Cleared    | POSTED     | Reconciled   |
+| Pending   | Pending    | PENDING    | Unreconciled |
+| Cancelled | Voided     | VOID       | Cancelled    |
 
 ### Payment Methods (Picklist Example)
 
-| Customer A | Customer B | Customer C |
-|------------|------------|------------|
-| Wire Transfer | WIRE | Bank Transfer / Wire |
-| ACH | EFT / ACH | BACS |
-| Check | CHECK | Cheque |
-| Credit Card | CARD | Credit Card / Card Payment |
-| Cash | CASH | Cash |
-| Direct Deposit | ACH | BACS |
-| Bank Transfer | BANK | Bank Transfer |
+| Customer A     | Customer B | Customer C                 |
+| -------------- | ---------- | -------------------------- |
+| Wire Transfer  | WIRE       | Bank Transfer / Wire       |
+| ACH            | EFT / ACH  | BACS                       |
+| Check          | CHECK      | Cheque                     |
+| Credit Card    | CARD       | Credit Card / Card Payment |
+| Cash           | CASH       | Cash                       |
+| Direct Deposit | ACH        | BACS                       |
+| Bank Transfer  | BANK       | Bank Transfer              |
 
 ### Account Types (Chart of Accounts)
 
-| Meaning | Customer A | Customer B | Customer C |
-|---------|------------|------------|------------|
-| Asset | Asset | ASSET | Assets |
-| Liability | Liability | LIABILITY | Liabilities |
-| Equity | Equity | EQUITY | Capital |
-| Revenue | Revenue | REVENUE | Income |
-| Expense | Expense | EXPENSE | Direct Costs / Overheads |
+| Meaning   | Customer A | Customer B | Customer C               |
+| --------- | ---------- | ---------- | ------------------------ |
+| Asset     | Asset      | ASSET      | Assets                   |
+| Liability | Liability  | LIABILITY  | Liabilities              |
+| Equity    | Equity     | EQUITY     | Capital                  |
+| Revenue   | Revenue    | REVENUE    | Income                   |
+| Expense   | Expense    | EXPENSE    | Direct Costs / Overheads |
 
 ## Usage
 
