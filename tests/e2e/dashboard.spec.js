@@ -40,6 +40,8 @@ test.describe('Onboarding Dashboard', () => {
 });
 
 test.describe('Customer Info', () => {
+  test.describe.configure({ mode: 'serial' });
+
   test('should show the form pre-filled with the existing customer', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('button', { name: 'Customer Info' }).click();
@@ -68,6 +70,47 @@ test.describe('Customer Info', () => {
 
     await page.getByRole('button', { name: 'Dashboard' }).click();
     await expect(page.locator('.checklist li').first().locator('.step-status')).toHaveClass(
+      /completed/
+    );
+  });
+});
+
+test.describe('Tenant Setup', () => {
+  test.describe.configure({ mode: 'serial' });
+
+  test('should show the form pre-filled with the existing tenant', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Tenant Setup' }).click();
+
+    await expect(page.getByLabel('Plan')).toHaveValue('professional');
+    await expect(page.getByLabel('Status')).toHaveValue('pending');
+  });
+
+  test('should update the tenant and show a success message', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Tenant Setup' }).click();
+
+    await expect(page.getByLabel('Plan')).toHaveValue('professional');
+    await expect(page.getByLabel('Status')).toHaveValue('pending');
+
+    await page.getByLabel('Plan').selectOption('enterprise');
+    await page.getByLabel('Status').selectOption('active');
+    await page.getByRole('button', { name: 'Update' }).click();
+
+    await expect(page.locator('.form-success')).toBeVisible();
+  });
+
+  test('should mark the Tenant Setup step completed after update', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Tenant Setup' }).click();
+
+    await expect(page.getByLabel('Plan')).toHaveValue('enterprise');
+    await page.getByRole('button', { name: 'Update' }).click();
+
+    await expect(page.locator('.form-success')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Dashboard' }).click();
+    await expect(page.locator('.checklist li').nth(2).locator('.step-status')).toHaveClass(
       /completed/
     );
   });

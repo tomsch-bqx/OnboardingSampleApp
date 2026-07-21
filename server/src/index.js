@@ -2,7 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const store = require('./data/store');
 const { validateCustomer } = require('./models/validation');
-const { createCustomer, createDefaultOnboardingSteps, calculateProgress } = require('./models');
+const { validateTenant } = require('./models/tenantValidation');
+const {
+  createCustomer,
+  createTenant,
+  createDefaultOnboardingSteps,
+  calculateProgress
+} = require('./models');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -113,6 +119,69 @@ app.get('/api/tenants/:customerId', (req, res) => {
     return res.status(404).json({ error: 'Tenant not found' });
   }
   res.json(tenant);
+});
+
+// Create a new tenant
+app.post('/api/tenants', (req, res) => {
+  const { customerId } = req.body;
+  const customer = store.getCustomerById(customerId);
+  if (!customer) {
+    return res.status(404).json({ error: 'Customer not found' });
+  }
+
+  const { valid, errors } = validateTenant(req.body);
+  if (!valid) {
+    return res.status(400).json({ errors });
+  }
+
+  if (store.getTenantByCustomerId(customerId)) {
+    return res.status(409).json({ error: 'Tenant already exists for this customer' });
+  }
+
+  const tenant = store.addTenant(
+    createTenant({ customerId, plan: req.body.plan, status: 'provisioning' })
+  );
+
+  let onboardingState = store.getOnboardingState(customerId);
+  if (onboardingState) {
+    const steps = onboardingState.steps.map((step) =>
+      step.id === 'step_3' ? { ...step, status: 'completed' } : step
+    );
+    onboardingState = store.updateOnboardingState(customerId, {
+      steps,
+      progressPercent: calculateProgress(steps)
+    });
+  }
+
+  res.status(201).json({ tenant, onboardingState });
+});
+
+// Update an existing tenant
+app.put('/api/tenants/:customerId', (req, res) => {
+  const existing = store.getTenantByCustomerId(req.params.customerId);
+  if (!existing) {
+    return res.status(404).json({ error: 'Tenant not found' });
+  }
+
+  const { valid, errors } = validateTenant(req.body, { requirePlan: false });
+  if (!valid) {
+    return res.status(400).json({ errors });
+  }
+
+  const tenant = store.updateTenant(req.params.customerId, req.body);
+
+  let onboardingState = store.getOnboardingState(req.params.customerId);
+  if (onboardingState) {
+    const steps = onboardingState.steps.map((step) =>
+      step.id === 'step_3' ? { ...step, status: 'completed' } : step
+    );
+    onboardingState = store.updateOnboardingState(req.params.customerId, {
+      steps,
+      progressPercent: calculateProgress(steps)
+    });
+  }
+
+  res.json({ tenant, onboardingState });
 });
 
 // Start server

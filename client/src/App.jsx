@@ -72,12 +72,7 @@ function App() {
             description="Map customer data to platform configuration"
           />
         )}
-        {activeTab === 'tenant-setup' && (
-          <PlaceholderTab
-            title="Tenant Setup"
-            description="Provision and configure customer tenant"
-          />
-        )}
+        {activeTab === 'tenant-setup' && <TenantSetupTab onOnboardingUpdate={refetchOnboarding} />}
         {activeTab === 'import' && (
           <PlaceholderTab title="Import" description="Import customer data into the platform" />
         )}
@@ -307,6 +302,162 @@ function FormField({ label, value, error, onChange }) {
         value={value}
         onChange={onChange}
       />
+      {error && <p className="form-error">{error}</p>}
+    </div>
+  );
+}
+
+const PLAN_OPTIONS = ['starter', 'professional', 'enterprise'];
+const STATUS_OPTIONS = ['pending', 'provisioning', 'active', 'failed'];
+
+function validateTenantForm(form, { requirePlan }) {
+  const errors = {};
+  if (requirePlan && !form.plan) {
+    errors.plan = 'Plan is required';
+  }
+  return errors;
+}
+
+function TenantSetupTab({ onOnboardingUpdate }) {
+  const [customerId, setCustomerId] = useState(null);
+  const [tenantExists, setTenantExists] = useState(false);
+  const [form, setForm] = useState({ plan: '', status: '' });
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/customers')
+      .then((res) => res.json())
+      .then(async (customers) => {
+        if (customers.length === 0) {
+          setLoading(false);
+          return;
+        }
+
+        const customer = customers[0];
+        setCustomerId(customer.id);
+
+        const tenantRes = await fetch(`/api/tenants/${customer.id}`);
+        if (tenantRes.ok) {
+          const tenant = await tenantRes.json();
+          setForm({ plan: tenant.plan || '', status: tenant.status || '' });
+          setTenantExists(true);
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const handleChange = (field) => (e) => {
+    setForm({ ...form, [field]: e.target.value });
+    setSubmitSuccess(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const errors = validateTenantForm(form, { requirePlan: !tenantExists });
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
+    setSubmitting(true);
+    setSubmitSuccess(false);
+    try {
+      const url = tenantExists ? `/api/tenants/${customerId}` : '/api/tenants';
+      const method = tenantExists ? 'PUT' : 'POST';
+      const body = tenantExists
+        ? { plan: form.plan, status: form.status }
+        : { customerId, plan: form.plan };
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setFieldErrors(data.errors || {});
+        return;
+      }
+
+      setForm({ plan: data.tenant.plan || '', status: data.tenant.status || '' });
+      setTenantExists(true);
+      setFieldErrors({});
+      setSubmitSuccess(true);
+      onOnboardingUpdate();
+    } catch (err) {
+      console.error('Failed to save tenant:', err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="placeholder">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h2>Tenant Setup</h2>
+      <p style={{ color: '#6b7280', marginBottom: '20px' }}>
+        Provision and configure customer tenant
+      </p>
+
+      <form onSubmit={handleSubmit} noValidate>
+        <SelectField
+          label="Plan"
+          value={form.plan}
+          error={fieldErrors.plan}
+          onChange={handleChange('plan')}
+          options={PLAN_OPTIONS}
+        />
+
+        {tenantExists && (
+          <SelectField
+            label="Status"
+            value={form.status}
+            error={fieldErrors.status}
+            onChange={handleChange('status')}
+            options={STATUS_OPTIONS}
+          />
+        )}
+
+        <button type="submit" className="form-submit" disabled={submitting}>
+          {submitting ? 'Saving…' : tenantExists ? 'Update' : 'Provision Tenant'}
+        </button>
+
+        {submitSuccess && <p className="form-success">✓ Tenant setup saved</p>}
+      </form>
+    </div>
+  );
+}
+
+function SelectField({ label, value, error, onChange, options }) {
+  const id = `field-${label.toLowerCase().replace(/\s+/g, '-')}`;
+  return (
+    <div className="form-field">
+      <label htmlFor={id}>{label}</label>
+      <select
+        id={id}
+        className={`form-input ${error ? 'error' : ''}`}
+        value={value}
+        onChange={onChange}
+      >
+        <option value="" disabled>
+          Select {label.toLowerCase()}
+        </option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
       {error && <p className="form-error">{error}</p>}
     </div>
   );
