@@ -9,7 +9,21 @@
     "install:all": "npm install && cd server && npm install && cd ../client && npm install",
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "cd server && npm test",
-    "test:e2e": "npx playwright test"
+    "test:e2e": "npx playwright test",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "client/**/*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "server/**/*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
@@ -19,6 +33,8 @@
     "eslint-config-prettier": "^9.1.2",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^15.15.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "prettier": "^3.9.6"
   }
 }

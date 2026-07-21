@@ -33,3 +33,11 @@ lint:
 # Format the repo with Prettier
 format:
     npx prettier --write .
+
+# Install git hooks (husky + lint-staged)
+pre-commit-install:
+    npx husky init
+
+# Run lint-staged against currently staged files
+pre-commit-run:
+    npx lint-staged
